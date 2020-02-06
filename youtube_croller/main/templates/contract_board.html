@@ -54,6 +54,7 @@
         <thead id="title">
             <tr>
                 <th>ID</th>
+                <th>직원명</th>
                 <th>Celly 인스타 계정</th>
                 <th>인플루언서</th>
                 <th>DM 내용</th>
@@ -72,6 +73,7 @@
             <tr>
                 <td><script>document.write(index)</script></td>
                 <td>{{i.insta_id}}</td>
+                <td>{{account.nickname}}</td>
                 <td><a href="https://www.instagram.com/{{i.influencer}}">{{i.influencer}}</a></td>
                 <td>{{i.feed_condition}}</td>
                 {% if i.is_confirmed == False %}
@@ -95,6 +97,7 @@
             <form method="POST" action="">
                 {% csrf_token %}
                 <td></td>
+                <td>{{account.nickname}}</td>
                 <td><input type="text" placeholder="ex) celly11" name="insta_id"></td>
                 <td><input type="text" name="influencer"></td>
                 <td><textarea cols="30" rows="3" name="feed_condition"></textarea></td>
