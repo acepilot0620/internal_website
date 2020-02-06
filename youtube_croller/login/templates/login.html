@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- bootstrap  -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
+    </script>
+
+    <title>로그인</title>
+    <style>
+        
+
+        .login{
+            width: 410px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%,-50%);
+        }
+
+        .login h2{
+            padding: 0 0 20px;
+            font-size: 32px; color: #111111;
+            border-bottom:2px solid #111111;
+            text-align: center; line-height: 1;
+        }
+        .login li{
+            padding: 0 0 12px;
+
+        }
+        .login ul{
+            list-style:none;
+        }
+
+        .login input{
+            width: 90%; height: 46px;
+            box-sizing: border-box;
+            text-indent: 16px;
+            margin-left: 20px;
+        }
+        .login > ul li input ::-webkit-input-placeholder{
+            font-size: 16px; color: #9fa19f;
+        }
+
+        .login button{
+            width: 100%; height:56px; line-height: 56px; background:#81DAF5;
+            font-size: 18px; color: #fff; margin-top: 30px;
+        }
+        .login > ul{
+            padding: 40px 0 33px;
+        }
+        .login div ul{
+            display: flex; justify-content: center;
+        }
+        .login div ul li{
+            padding-right: 50px;
+        }
+        .login div ul li a{
+            font-size: 14px; color: #111111;
+        }
+
+    </style>
+</head>
+
+<body>
+    {% load static %}
+
+    
+    <section class="login">
+        <div id="login_title">
+            <a href="{% url 'login' %}"><img style="width: 100%;" src="{% static 'images/cellystory_logo2.jpg' %}" href="{% url 'login' %}" alt=""></a>
+        </div>
+        <h2>로그인</h2>
+        <ul>
+            <form method="POST" action="{% url 'login' %}">
+            {% csrf_token %}
+            <li><input type="text" placeholder="아이디" name="id"></li>
+            <li><input type="password" placeholder="비밀번호" name="password"></li>
+            <div style=" margin: 0 0 0 30px; color: red;" class="messages">
+                {% if messages %}
+                {% for message in messages %}
+                {{ message.message }}
+                {% endfor %}
+                {% endif %}
+            </div>
+            <li><button type="submit">로그인</button></li>
+            </form>
+            
+        </ul>
+        <div>
+            <ul>
+                <li><a href="{% url 'signup' %}">계정생성</a></li>
+            </ul>
+            
+        </div>
+    </section>
+</body>

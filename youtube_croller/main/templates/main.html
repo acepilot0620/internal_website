@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function () {
+
+            $(".btn btn-outline-success").on("click", function () {
+                //태그 이름     ~동작되면  ~ 실행 동작
+                alert("데이터를 가져오고 있습니다.\n로딩이 완료될 때까지 잠시 대기해주세요")
+            });
+        })
+    </script>
+    <title>인플루언서 찾기</title>
+    <style>
+        #logo{
+            text-align: center;
+            margin-top: 70px;
+        }
+        #youtube_container{
+            width: 60%;
+            text-align: center;
+            margin-top: 150px;
+            margin-bottom: 30px;
+        }
+        #instagram_container{
+            width: 60%;
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 30px;
+        }
+        #search_bar{
+            position: relative;
+            left: 35%;
+        }
+        #contract{
+            margin-right: 30px;
+            margin-left: 30px;
+        }
+        .footer{
+            background-color: gray;
+        }
+        .float-right{
+            margin-right: 10px;
+        }
+    </style>
+</head>
+{% load static %}
+<body>   
+    <header>
+        <a style="position: absolute; top: 10%; left: 80%;" href="{% url 'logout' %}"><button type="button" class="btn btn-primary btn-lg">로그아웃</button></a>
+    </header>
+    <div id="logo">
+        <img style="width: 30%;" src="{% static 'images/cellystory_logo2.jpg' %}" alt="">
+    </div>
+
+    {% if user.is_active == True %}
+    <div style="text-align: center;">
+        <h1>{{nickname}} {{position}}님 반갑습니다</h1>
+    </div>
+        <div id="youtube_container">
+            <form id="search_bar" method="POST" class="form-inline my-2 my-lg-0">
+                {% csrf_token %}
+                <img style="width: 10%; margin-right: 10px;" src="https://cdn.1min30.com/wp-content/uploads/2017/03/YouTube-logo.jpg" alt="">
+                <input style="width: 30%;" class="form-control mr-sm-2" type="text" name="search_youtube" placeholder="유튜브 키워드를 입력하세요" aria-label="search">
+                <input style="width: 25%;" class="form-control mr-sm-2" type="text" name="condition" placeholder="최소 구독자 수를 입력하세요" aria-label="condition">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">인플루언서 검색</button>
+            </form>
+        </div>
+        <div id="instagram_container">
+            <form id="search_bar" method="POST" class="form-inline my-2 my-lg-0">
+                {% csrf_token %}
+                <img style="width: 10%; margin-right: 10px;" src='https://imageog.flaticon.com/icons/png/512/174/174855.png?size=1200x630f&pad=10,10,10,10&ext=png&bg=FFFFFFFF' alt="">
+                <input style="width: 30%;" class="form-control mr-sm-2" type="text" name="search_insta" placeholder="인스타그램 키워드를 입력하세요" aria-label="search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">인플루언서 검색</button>
+            </form>
+        </div>
+        <div style="text-align: center;">
+            <div style="display: inline-block; border: gray; border-style: dashed; width: 80%;">
+            </div>
+        </div>
+        <div style="text-align: center;">
+            <ul style="list-style: none;">
+                <li>
+                    <div style="display: inline-block;">
+                        <p style="font-size: 60px; font-weight: bolder; margin-top: 30px;">진행중인 계약</p>
+                    </div>
+                </li>
+                {% if position == '팀장' or position == '이사' %}
+                <li>
+                    <a style="font-size: 20px;" href="{% url 'create_contract' %}">신규 계약 추가</a>
+                </li>
+                {% endif %}
+                <li style="margin-top: 50px;">
+                    <ul style="display: flex;justify-content: center; list-style: none;">
+                        {% for obj in contract %}
+                        <li id="contract">
+
+                            <div>
+                                <a href="{% url 'contract_board' obj.id %}">
+                                    <button  style="width: 150px; height: 100px;" type="button" class="btn btn-primary btn-lg">{{obj.name}}</button>
+                                </a>   
+                            </div>
+                            {% if position == '팀장' or position == '이사' %}
+                            <div>
+                                <a style="color: red;" href="{% url 'delete_contract' obj.id %}">삭제</a>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        
+    {% endif %}
+    {% if user.is_active == False %}
+        <div style="text-align: center;">
+        <br>
+        <br>
+        <br>
+        <h1>로그아웃 되었습니다</h1>
+        <br>
+        <h1>오늘도 수고하셨습니다</h1>
+        <br>
+        <a href="{% url 'login' %}">로그인 창으로</a>
+        </div>
+    {% endif %}
+
+    <div style="margin-top: 100px;" class="footer">
+        <div class="container">
+            <div class="row padding_top_50">
+                <div style="margin-top: 30px; margin-bottom: 30px;" class="col text-left">
+                    <img style="width: 30%;" src="https://cellystory.com/static/img/common/logo.svg">
+                </div>
+                <div style="margin-top: 30px;" class="col text-right">
+                    <a class="float-right" href="" target="_blank">
+                        <img src="https://cellystory.com/static/img/common/footer-icon-youtube.svg">
+                    </a>
+                    <a class="float-right margin_right_5" href="" target="_blank">
+                        <img src="https://cellystory.com/static/img/common/footer-icon-facebook.svg">
+                    </a>
+                    <a class="float-right margin_right_5" href="" target="_blank">
+                        <img src="https://cellystory.com/static/img/common/footer-icon-instagram.svg">
+                    </a>
+                </div>
+            </div>
+        </div>
+</body>
+
+    
+
+</html>

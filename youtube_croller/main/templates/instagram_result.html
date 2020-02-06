@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
+    </script>
+    <title>키워드: {{search}} 검색 결과</title>
+    <style>
+        #logo {
+            text-align: center;
+            margin-top: 70px;
+        }
+
+        #container {
+            width: 50%;
+            text-align: center;
+            margin-top: 150px;
+            margin-bottom: 100px;
+            margin-left: 450px;
+            top: 50%;
+            left: 50%;
+        }
+
+
+        table {
+            margin: auto;
+            text-align: center;
+            width: 80%;
+            border: 1px solid #444444;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid #444444;
+
+        }
+
+        #title {
+            text-align: center;
+            background-color: orange;
+            font-weight: bold;
+        }
+
+        td {
+            background-color: beige;
+        }
+    </style>
+</head>
+
+<body>
+    {% load static %}
+    <div id="logo">
+        <img src="{% static 'images/cellystory_logo2.jpg' %}"  alt="">
+    </div>
+    <div id="container">
+        <img style="width: 10%;" src="https://imageog.flaticon.com/icons/png/512/174/174855.png?size=1200x630f&pad=10,10,10,10&ext=png&bg=FFFFFFFF" alt="">
+        <h3>검색어: "{{search}}"으로 검색한 결과 입니다.</h3>
+        <h5>관련검색어: {{relevent_keyword}}</h5>
+    </div>
+    <table>
+        <thead id="title">
+            <tr>
+                <th>ID</th>
+                <th>인스타 계정</th>
+                <th>프로필 URL</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in result%}
+            <tr>
+                <td>{{i.id}}</td>
+                <td>{{i.insta_id}}</td>
+                <td><a href="{{i.profile_url}}">{{i.profile_url}}</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div style="margin-top: 100px; margin-right: 250px; margin-bottom: 150px; text-align: right;">
+        <a href="{% url 'delete' %}">다른 키워드 검색하기</a>
+    </div>
+
+</body>
+
+</html>
