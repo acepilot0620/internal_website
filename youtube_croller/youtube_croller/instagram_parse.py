@@ -72,9 +72,7 @@ def insta_croller(search):
             for url in url_list:
                 try:
                     driver.get(url)
-                    influencer = WebDriverWait(driver,15).until(
-                        EC.presence_of_element_located((By.XPATH,'//*[@id="react-root"]/section/main/div/div/article/header/div[2]/div[1]/div[1]/h2/a'))
-                    )
+                    influencer = driver.find_element_by_xpath('//*[@id="react-root"]/section/main/div/div/article/header/div[2]/div[1]/div[1]/a').text
                     # ignored_exceptions=(NoSuchElementException,StaleElementReferenceException,)
                     # try:
                     #     # profile_img = driver.find_element_by_xpath('//*[@id="react-root"]/section/main/div/div/article/header/div[1]/a/img')
@@ -91,8 +89,8 @@ def insta_croller(search):
                     #     )
 
 
-                    if influencer.text not in influencer_list:
-                        influencer_list.append(influencer.text)
+                    if influencer not in influencer_list:
+                        influencer_list.append(influencer)
                         #profile_img_list.append(profile_img)
                         
                     

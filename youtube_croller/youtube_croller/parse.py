@@ -12,11 +12,11 @@ import time
 
 class Result_node():
 
-    def __init__(self,channel_name, subscriber_num,not_int_subscriber_num, channel_avg_visit_num, profile_url):
+    def __init__(self,channel_name, subscriber_num,not_int_subscriber_num, profile_url):
         self.channel_name = channel_name
         self.subscriber_num = subscriber_num
         self.not_int_subscriber_num = not_int_subscriber_num
-        self.channel_avg_visit_num = channel_avg_visit_num
+        # self.channel_avg_visit_num = channel_avg_visit_num
         self.profile_url = profile_url
 
 def croller(search):
@@ -49,13 +49,13 @@ def croller(search):
     ten_video_visit_num_list = []
 
     # 최근 10개 동영상 평균 조회수 리스트
-    channel_avg_visit_num = []
+    # channel_avg_visit_num = []
 
     # 구독자 수 리스트
     subscriber_num_list = []
 
-    # 조회수 리스트
-    visit_num_list = []
+    # # 조회수 리스트
+    # visit_num_list = []
 
     # 채널 프로필 URL 리스트
     profile_url_list = []
@@ -65,8 +65,10 @@ def croller(search):
 
     not_int_subscriber_num = []
 
+    dup_check = []
+
     #스크롤 미리 내려서 충분한 유튜버 확보
-    number_of_scroll = 15
+    number_of_scroll = 0
     body = driver.find_element_by_tag_name('body')
 
     while number_of_scroll:
@@ -78,8 +80,11 @@ def croller(search):
 
     # 모든 동영상 리스트
     channel_list = driver.find_elements_by_xpath('//*[@id="text"]/a')
-    for i in channel_list:
-        channel_url_list.append(i.get_attribute('href'))
+
+    for obj in channel_list:
+        if obj.text not in dup_check:
+            dup_check.append(obj.text)
+            channel_url_list.append(obj.get_attribute('href'))
 
     delay =1
     
@@ -117,58 +122,58 @@ def croller(search):
 
 
 
-            #최근 업로드 동영상 10개 평균 조회수
-            to_video_list = driver.find_element_by_xpath('//*[@id="tabsContent"]/paper-tab[2]/div')
-            to_video_list.click()
-            time.sleep(1)
+            # #최근 업로드 동영상 10개 평균 조회수
+            # to_video_list = driver.find_element_by_xpath('//*[@id="tabsContent"]/paper-tab[2]/div')
+            # to_video_list.click()
+            # time.sleep(1)
 
-            ten_video_visit_num_object = driver.find_elements_by_xpath('//*[@id="metadata-line"]/span[1]')
-            stop = 0
-            for i in ten_video_visit_num_object:
-                try:
-                    text = i.text
-                    ten_video_visit_num_list.append(text[4:-1])
-                    stop += 1
-                    if stop == 10:
-                        break
-                except StaleElementReferenceException:
-                    break        
+            # ten_video_visit_num_object = driver.find_elements_by_xpath('//*[@id="metadata-line"]/span[1]')
+            # stop = 0
+            # for i in ten_video_visit_num_object:
+            #     try:
+            #         text = i.text
+            #         ten_video_visit_num_list.append(text[4:-1])
+            #         stop += 1
+            #         if stop == 10:
+            #             break
+            #     except StaleElementReferenceException:
+            #         break        
 
-            visit_num_sum = 0
-            for i in ten_video_visit_num_list:
-                i = i.replace(',','')
-                if i == '':
-                    i = '  '    
-                if i[-1] == '만':
-                    i = i[:-1]
-                    i = float(i)*10000
-                elif i[-1] == '천':
-                    i = i[:-1]
-                    i = float(i)*1000
-                elif i[-1] == '억':
-                    i = i[:-1]
-                    i = float(i)*100000000
-                elif i[-1] == ' ':
-                    i = 0
-                else:
-                    i = float(i)
+            # visit_num_sum = 0
+            # for i in ten_video_visit_num_list:
+            #     i = i.replace(',','')
+            #     if i == '':
+            #         i = '  '    
+            #     if i[-1] == '만':
+            #         i = i[:-1]
+            #         i = float(i)*10000
+            #     elif i[-1] == '천':
+            #         i = i[:-1]
+            #         i = float(i)*1000
+            #     elif i[-1] == '억':
+            #         i = i[:-1]
+            #         i = float(i)*100000000
+            #     elif i[-1] == ' ':
+            #         i = 0
+            #     else:
+            #         i = float(i)
 
-                visit_num_sum += i
+            #     visit_num_sum += i
             
             
 
-            avg_visit_num = visit_num_sum/len(ten_video_visit_num_list)
-            #평균 10개 동영상 조회수 리스트 삽입
-            channel_avg_visit_num.append(round(avg_visit_num))
-            ten_video_visit_num_list = []
-            visit_num_sum = 0
+            # avg_visit_num = visit_num_sum/len(ten_video_visit_num_list)
+            # #평균 10개 동영상 조회수 리스트 삽입
+            # channel_avg_visit_num.append(round(avg_visit_num))
+            # ten_video_visit_num_list = []
+            # visit_num_sum = 0
 
 
 
     result_list = []
 
     for i in range(len(channel_name_list)):
-        new_node = Result_node(channel_name_list[i],subscriber_num_list[i],not_int_subscriber_num[i],channel_avg_visit_num[i],channel_url_list[i])
+        new_node = Result_node(channel_name_list[i],subscriber_num_list[i],not_int_subscriber_num[i],channel_url_list[i])
         result_list.append(new_node)
 
 
@@ -176,3 +181,5 @@ def croller(search):
     driver.close()
 
     return result_list
+
+

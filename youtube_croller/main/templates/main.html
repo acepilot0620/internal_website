@@ -71,7 +71,13 @@
                 <input style="width: 30%;" class="form-control mr-sm-2" type="text" name="search_youtube" placeholder="유튜브 키워드를 입력하세요" aria-label="search">
                 <input style="width: 25%;" class="form-control mr-sm-2" type="text" name="condition" placeholder="최소 구독자 수를 입력하세요" aria-label="condition">
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">인플루언서 검색</button>
+                {% if messages %}
+                {% for message in messages %}
+                <p style="color: red;">{{ message.message }}</p>
+                {% endfor %}
+                {% endif %}
             </form>
+
         </div>
         <div id="instagram_container">
             <form id="search_bar" method="POST" class="form-inline my-2 my-lg-0">
