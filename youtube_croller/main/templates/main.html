@@ -13,7 +13,7 @@
 
             $(".btn btn-outline-success").on("click", function () {
                 //태그 이름     ~동작되면  ~ 실행 동작
-                alert("데이터를 가져오고 있습니다.\n로딩이 완료될 때까지 잠시 대기해주세요")
+                alert("데이터를 가져오고 있습니다.\n로딩이 완료될 때까지 다른 페이지로 이동하지 마세요")
             });
         })
     </script>
@@ -77,7 +77,6 @@
                 {% endfor %}
                 {% endif %}
             </form>
-
         </div>
         <div id="instagram_container">
             <form id="search_bar" method="POST" class="form-inline my-2 my-lg-0">

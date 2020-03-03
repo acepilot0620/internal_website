@@ -73,37 +73,11 @@ def insta_croller(search):
                 try:
                     driver.get(url)
                     influencer = driver.find_element_by_xpath('//*[@id="react-root"]/section/main/div/div/article/header/div[2]/div[1]/div[1]/a').text
-                    # ignored_exceptions=(NoSuchElementException,StaleElementReferenceException,)
-                    # try:
-                    #     # profile_img = driver.find_element_by_xpath('//*[@id="react-root"]/section/main/div/div/article/header/div[1]/a/img')
-                    #     profile_img = WebDriverWait(driver,10,ignored_exceptions=ignored_exceptions).until(
-                    #         EC.presence_of_element_located((By.XPATH,'//*[@id="react-root"]/section/main/div/div/article/header/div[1]/a/img'))
-                    #     )
-                    # except NoSuchElementException:
-                    #     profile_img = WebDriverWait(driver,10,ignored_exceptions=ignored_exceptions).until(
-                    #         EC.presence_of_element_located((By.XPATH,'//*[@id="react-root"]/section/main/div/div/article/header/div[1]/span/img'))
-                    #     )
-                    # except TimeoutException:
-                    #     profile_img = WebDriverWait(driver,10,ignored_exceptions=ignored_exceptions).until(
-                    #         EC.presence_of_element_located((By.XPATH,'//*[@id="react-root"]/section/main/div/div/article/header/div[1]/span/img'))
-                    #     )
-
 
                     if influencer not in influencer_list:
                         influencer_list.append(influencer)
-                        #profile_img_list.append(profile_img)
-                        
-                    
-                    # new_node = Result_node(influencer.text,profile_img.get_attribute('src'),'https://www.instagram.com/'+influencer.text)
-                    # result.append(new_node)
-                    # next_btn.click()
                 except TimeoutException:
                     pass 
-            # close_btn = WebDriverWait(driver,10).until(
-            #             EC.presence_of_element_located((By.XPATH,"/html/body/div[4]/button[1]"))
-            #         )            
-            # close_btn = driver.find_element_by_xpath('/html/body/div[4]/button[1]')
-            # close_btn.click()
             driver.get('https://www.instagram.com/explore/tags/'+keyword)
             time.sleep(2)
             relevent_keyword_obj = driver.find_elements_by_partial_link_text('#')
@@ -122,6 +96,8 @@ def insta_croller(search):
         except TimeoutException:
             break
         
+        influencer_list = list(set(influencer_list))
+
         for t in range(len(influencer_list)):
             new_node = Result_node(influencer_list[t],'https://www.instagram.com/'+influencer_list[t])
             result.append(new_node)
@@ -129,3 +105,4 @@ def insta_croller(search):
         if len(result) == 50:
             break
     return result, relevent_keyword_list
+

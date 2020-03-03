@@ -68,7 +68,7 @@ def croller(search):
     dup_check = []
 
     #스크롤 미리 내려서 충분한 유튜버 확보
-    number_of_scroll = 0
+    number_of_scroll = 15
     body = driver.find_element_by_tag_name('body')
 
     while number_of_scroll:

@@ -5,7 +5,6 @@ from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from django.contrib import messages
 import urllib.parse
 import time
 from youtube_croller import parse, instagram_parse
@@ -31,8 +30,7 @@ def main(request):
         condition = request.POST.get('condition')
         insta_search = request.POST.get('search_insta')
 
-        if youtube_search != '' and condition != '':
-            print(condition)
+        if youtube_search != None:
             condition = int(condition)
             result_list = parse.croller(youtube_search)
             i = 1
@@ -47,9 +45,6 @@ def main(request):
                 i +=1
             result_all = Youtube_result.objects.all()
             return render(request,'youtube_result.html',{'search':youtube_search, 'result':result_all, 'condition':condition})
-        else:
-            messages.info(request, "모든 검색 항목을 채워주세요.")
-            return render(request, 'main.html')
         if insta_search != None:
             result_list,relevent_keyword_list = instagram_parse.insta_croller(insta_search)
             output = ''
