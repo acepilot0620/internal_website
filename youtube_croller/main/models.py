@@ -24,6 +24,7 @@ class Contract(models.Model):
 class Record(models.Model):
     contract = models.ForeignKey(Contract,on_delete=models.CASCADE)
     insta_id = models.CharField(max_length=30)
+    writer = models.CharField(max_length=10,default="default_id")
     influencer = models.CharField(max_length=30)
     #바꾸기 귀찮아서 안바꿈 feed_condition아니라  DM내용임
     feed_condition = models.TextField(max_length=1000)

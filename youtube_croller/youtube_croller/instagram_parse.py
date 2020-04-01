@@ -39,9 +39,9 @@ def insta_croller(search):
     driver.get('https://www.instagram.com/accounts/login/?source=auth_switcher')
     driver.implicitly_wait(1)
     email = driver.find_element_by_xpath("//*[@id='react-root']/section/main/div/article/div/div[1]/div/form/div[2]/div/label/input")
-    email.send_keys("acepilot0620@likelion.org")
+    email.send_keys("cellyapply1")
     password = driver.find_element_by_xpath("//*[@id='react-root']/section/main/div/article/div/div[1]/div/form/div[3]/div/label/input")
-    password.send_keys("chlwjdgh97!",Keys.ENTER)
+    password.send_keys("applycelly123!",Keys.ENTER)
 
     first_keyword = search
     relevent_keyword_list = []
