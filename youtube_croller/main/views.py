@@ -106,6 +106,7 @@ def show_record(request,contract_id):
         feed_condition = request.POST.get('feed_condition')
         new_record = Record()
         new_record.contract = contract
+        new_record.insta_id = insta_id
         new_record.influencer = influencer
         new_record.writer = account.nickname
         new_record.feed_condition = feed_condition
