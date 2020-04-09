@@ -10,8 +10,9 @@ import time
 from youtube_croller import parse, instagram_parse
 
 
-from django.shortcuts import render,redirect, HttpResponse, get_object_or_404
-from .models import Youtube_result,Search,Instagram_result,Contract,Record
+from django.shortcuts import render,redirect, HttpResponse, get_object_or_404,resolve_url
+from django.contrib import messages
+from .models import Youtube_result,Search,Instagram_result,Contract,Record,ID_btn
 from login.models import Account
 
 # Create your views here.
@@ -21,9 +22,11 @@ def main(request):
     if request.user.is_authenticated:
         contract = Contract.objects.all()
         account = Account.objects.get(user=request.user)
+        celly_btn = ID_btn.objects.all()
         context.setdefault('contract', contract)
         context.setdefault('nickname', account.nickname)
         context.setdefault('position', account.position)
+        context.setdefault('celly_btn', celly_btn)
     if request.method == 'POST':
 
         youtube_search = request.POST.get('search_youtube')
@@ -135,8 +138,66 @@ def delete(request, record_id, contract_id):
     record.delete()
     return redirect('/contract_board/'+str(contract_id))
 
- 
 
+def btn_create(request):
+    if request.method == "POST":
+        celly_id = request.POST.get('celly_id')
+        celly_pw = request.POST.get('celly_pw')
+        if celly_id=='' or celly_pw == '':
+            messages.info(request,"모든 항목을 채워주세요.")
+            return redirect('btn_create')
+        new_btn = ID_btn()
+        new_btn.celly_id = celly_id
+        new_btn.celly_pw = celly_pw
+        new_btn.save()
+        return redirect('home')
+    return render(request,'create_celly_btn.html')
+
+    
+def celly_btn_info(request, btn_id):
+    celly_btn = get_object_or_404(ID_btn, pk = btn_id)
+    account = Account.objects.get(user=request.user)
+    context = {'celly_btn':celly_btn, 'account':account }
+    if request.method == 'POST':
+        new_pw = request.POST.get('new_celly_pw')
+        celly_btn.celly_pw = new_pw
+        celly_btn.save()
+        return redirect('btn_info', btn_id)
+            
+    return render(request, "btn_info.html",context)
+        
+
+def btn_push(request, btn_id):
+    account = Account.objects.get(user=request.user)
+    selected_btn = ID_btn.objects.get(id=btn_id)
+    if selected_btn.now_using ==False:
+        selected_btn.now_using = True
+        selected_btn.using_worker = account.nickname
+        selected_btn.save()
+    else:
+        selected_btn.now_using = False
+        selected_btn.using_worker = '없음'
+        selected_btn.save()
+    
+    return redirect('btn_info',btn_id)
+
+
+def btn_delete(request,btn_id):
+    selected_btn = ID_btn.objects.get(id=btn_id)
+    selected_btn.delete()
+    return redirect('home')
+
+def btn_condition_change(request, btn_id):
+    selected_btn = ID_btn.objects.get(id=btn_id)
+    if selected_btn.dm_blocked == False:
+        selected_btn.dm_blocked = True
+        selected_btn.save()
+    else:
+        selected_btn.dm_blocked=False
+        selected_btn.save()
+    return redirect('btn_info',btn_id)
+
+    
 
 
 

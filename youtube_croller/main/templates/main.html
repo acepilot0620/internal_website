@@ -17,7 +17,7 @@
             });
         })
     </script>
-    <title>인플루언서 찾기</title>
+    <title>셀리스토리 직원용 페이지</title>
     <style>
         #logo{
             text-align: center;
@@ -49,6 +49,14 @@
         .float-right{
             margin-right: 10px;
         }
+
+        .celly_btn_container{
+            display: grid;
+            grid-template-columns: 150px 150px 150px 150px 150px;
+        }
+        #btn{
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 {% load static %}
@@ -63,6 +71,18 @@
     {% if user.is_active == True %}
     <div style="text-align: center;">
         <h1>{{nickname}} {{position}}님 반갑습니다</h1>
+    </div>
+    <div style="display: flex; justify-content: center;">
+        <div class="celly_btn_container" style="text-align: center; margin-top: 100px;">
+            {% for btn in celly_btn %}
+            {% if btn.now_using == True %}
+            <a id="btn" href="{% url 'btn_info' btn.id %}"><button type="button" class="btn btn-danger btn-lg">{{btn.celly_id}}</button></a> 
+            {% else %}
+            <a id="btn" href="{% url 'btn_info' btn.id %}"><button type="button" class="btn btn-primary btn-lg">{{btn.celly_id}}</button></a>
+            {% endif %}
+            {% endfor %}
+            <a id="btn" href="{% url 'btn_create'%}"><button type="button" class="btn btn-primary btn-lg">계정 생성</button></a>
+        </div>
     </div>
         <div id="youtube_container">
             <form id="search_bar" method="POST" class="form-inline my-2 my-lg-0">
@@ -110,7 +130,7 @@
                             <div>
                                 <a href="{% url 'contract_board' obj.id %}">
                                     <button  style="width: 150px; height: 100px;" type="button" class="btn btn-primary btn-lg">{{obj.name}}</button>
-                                </a>   
+                                </a>     
                             </div>
                             {% if position == '팀장' or position == '이사' %}
                             <div>

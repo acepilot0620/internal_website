@@ -29,3 +29,10 @@ class Record(models.Model):
     #바꾸기 귀찮아서 안바꿈 feed_condition아니라  DM내용임
     feed_condition = models.TextField(max_length=1000)
     is_confirmed = models.BooleanField()
+
+class ID_btn(models.Model):
+    celly_id = models.CharField(max_length=20,default="default_id")
+    celly_pw = models.CharField(max_length=20,default='default_pw')
+    now_using = models.BooleanField(default=False)
+    using_worker = models.CharField(max_length=20, default="null")
+    dm_blocked = models.BooleanField(default=False)
