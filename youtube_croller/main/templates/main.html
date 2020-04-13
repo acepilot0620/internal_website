@@ -75,7 +75,7 @@
     <div style="display: flex; justify-content: center;">
         <div class="celly_btn_container" style="text-align: center; margin-top: 100px;">
             {% for btn in celly_btn %}
-            {% if btn.now_using == True %}
+            {% if btn.now_using == True or btn.dm_blocked %}
             <a id="btn" href="{% url 'btn_info' btn.id %}"><button type="button" class="btn btn-danger btn-lg">{{btn.celly_id}}</button></a> 
             {% else %}
             <a id="btn" href="{% url 'btn_info' btn.id %}"><button type="button" class="btn btn-primary btn-lg">{{btn.celly_id}}</button></a>
