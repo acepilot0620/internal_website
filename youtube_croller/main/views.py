@@ -8,6 +8,7 @@ from selenium.webdriver.support import expected_conditions as EC
 import urllib.parse
 import time
 from youtube_croller import parse, instagram_parse
+from . import auto_login
 
 
 from django.shortcuts import render,redirect, HttpResponse, get_object_or_404,resolve_url
@@ -173,6 +174,7 @@ def btn_push(request, btn_id):
     if selected_btn.now_using ==False:
         selected_btn.now_using = True
         selected_btn.using_worker = account.nickname
+        auto_login.insta_login(selected_btn.celly_id,selected_btn.celly_pw)
         selected_btn.save()
     else:
         selected_btn.now_using = False
